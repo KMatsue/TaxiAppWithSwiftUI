@@ -49,25 +49,7 @@ extension MainView{
             }
             .padding(.vertical)
             // Destination
-            HStack(spacing:12){
-                Circle()
-                    .frame(width: 30,height: 30)
-                VStack(alignment: .leading){
-                 
-               
-                            Text("目的地")
-                                .font(.subheadline)
-                            Text("地図を動かして地点を調整")
-                        .font(.headline)
-                               
-                        
-                }
-                Spacer()
-            }
-            .foregroundStyle(.secondary)
-            .padding()
-            .background(Color(uiColor: .systemGroupedBackground))
-            .clipShape(RoundedRectangle(cornerRadius: 18))
+            Destination()
             
             Spacer()
             // Button
