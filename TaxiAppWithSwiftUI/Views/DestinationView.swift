@@ -40,9 +40,17 @@ extension DestinationView {
             // Destination
             Destination()
             // Button
-            Capsule()
-                .frame(height: 60)
-            
+            Button {
+                print("ボタンが押されました")
+            } label: {
+                Text("ここに行く")
+                    .frame(maxWidth: .infinity)
+                    .foregroundColor(.white)
+                    .padding()
+                    .background(.black)
+                    .clipShape(Capsule())
+            }
+
         }.padding(.horizontal)
             .padding(.top,14)
     }
