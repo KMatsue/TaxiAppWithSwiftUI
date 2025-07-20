@@ -8,12 +8,17 @@
 import SwiftUI
 
 struct MainView: View {
+    @State private var showSearchView: Bool = false
+    
     var body: some View {
         VStack {
             // Map Area
             map
             // Information Area
             information
+        }
+        .sheet(isPresented: $showSearchView){
+            SearchView()
         }
     }
 }
@@ -54,7 +59,8 @@ extension MainView{
             Spacer()
             // Button
             Button{
-                print("押されました")
+//                print("押されました")
+                showSearchView.toggle()
             }label: {
                 Text("目的地を指定する")
                     .frame(maxWidth: .infinity)

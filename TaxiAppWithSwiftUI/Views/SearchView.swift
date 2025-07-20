@@ -12,14 +12,16 @@ struct SearchView: View {
     @State private var searchText = ""
     
     var body: some View {
-        VStack(spacing:0){
-            // Input Field
-            inputField
-            
-            Divider()
-            
-            // Results
-            searchResults
+        NavigationStack{
+            VStack(spacing:0){
+                // Input Field
+                inputField
+                
+                Divider()
+                
+                // Results
+                searchResults
+            }
         }
     }
 }
@@ -57,31 +59,36 @@ extension SearchView {
     }
     
     private var searchResultRow: some View {
-        HStack(spacing: 12){
-            // Icon
-            Image(systemName: "mappin.circle.fill")
-                .resizable()
-                .frame(width: 24, height: 24)
-                .foregroundStyle(.black)
-            // Text
-            VStack(alignment: .leading){
-                Text("横浜スタジアム")
-                    .fontWeight(.bold)
+        NavigationLink {
+            DestinationView()
+        } label: {
+            HStack(spacing: 12){
+                // Icon
+                Image(systemName: "mappin.circle.fill")
+                    .resizable()
+                    .frame(width: 24, height: 24)
                     .foregroundStyle(.black)
-                Text("神奈川県横浜市中区横浜公園")
-                    .font(.caption)
-                    .foregroundStyle(.gray)
+                // Text
+                VStack(alignment: .leading){
+                    Text("横浜スタジアム")
+                        .fontWeight(.bold)
+                        .foregroundStyle(.black)
+                    Text("神奈川県横浜市中区横浜公園")
+                        .font(.caption)
+                        .foregroundStyle(.gray)
+                }
+                
+                Spacer()
+                
+                //Icon
+                Image(systemName: "chevron.right")
+                    .foregroundStyle(.black)
             }
-            
-            Spacer()
-            
-            //Icon
-            Image(systemName: "chevron.right")
-                .foregroundStyle(.black)
+            .padding()
+            .background(.white)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
         }
-        .padding()
-        .background(.white)
-        .clipShape(RoundedRectangle(cornerRadius: 14))
+        
         
     }
 }
