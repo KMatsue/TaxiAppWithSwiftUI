@@ -79,7 +79,7 @@ extension SearchView {
                 Image(systemName: "mappin.circle.fill")
                     .resizable()
                     .frame(width: 24, height: 24)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.main)
                 // Text
                 VStack(alignment: .leading){
                     Text("横浜スタジアム")
@@ -94,7 +94,7 @@ extension SearchView {
                 
                 //Icon
                 Image(systemName: "chevron.right")
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.main)
             }
             .padding()
             .background(.white)

@@ -39,6 +39,8 @@ extension MainView{
             HStack(spacing:12){
                 Image(systemName: "figure.wave")
                     .imageScale(.large)
+                    .foregroundStyle(.main)
+                
                 VStack(alignment: .leading){
                     HStack{
                         Text("乗車地")
@@ -55,19 +57,25 @@ extension MainView{
             .padding(.vertical)
             // Destination
             Destination()
+                .overlay(alignment: .topLeading){
+                    VStack{
+                        Image(systemName: "arrowtriangle.down.fill")
+                        Image(systemName: "arrowtriangle.down.fill").opacity(0.66)
+                        Image(systemName: "arrowtriangle.down.fill").opacity(0.33)
+                    }
+                    .font(.caption2)
+                    .foregroundStyle(.main)
+                    .offset(x: 8, y: -16)
+                }
             
             Spacer()
             // Button
             Button{
-//                print("押されました")
+                //                print("押されました")
                 showSearchView.toggle()
             }label: {
                 Text("目的地を指定する")
-                    .frame(maxWidth: .infinity)
-                    .foregroundColor(.white)
-                    .padding()
-                    .background(.black)
-                    .clipShape(Capsule())
+                    .modifier(BasicButton())
             }
             
             
