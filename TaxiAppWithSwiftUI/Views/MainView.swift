@@ -6,9 +6,20 @@
 //
 
 import SwiftUI
+import MapKit
+import CoreLocation
 
 struct MainView: View {
     @State private var showSearchView: Bool = false
+//    @State private var cameraPosison: MapCameraPosition = .region(
+//        MKCoordinateRegion(
+//            center: .init(latitude: 35.45218, longitude: 139.63241),
+//            latitudinalMeters: 1000,
+//            longitudinalMeters: 1000
+//        )
+//    )
+    
+    @State private var cameraPosison: MapCameraPosition = .userLocation(fallback: .automatic)
     
     var body: some View {
         VStack {
@@ -30,7 +41,12 @@ struct MainView: View {
 extension MainView{
     
     private var map: some View {
-        Color.gray
+        Map(position: $cameraPosison) {
+            UserAnnotation()
+        }
+        .onAppear {
+            CLLocationManager().requestWhenInUseAuthorization()
+        }
     }
     
     private var information: some View {
