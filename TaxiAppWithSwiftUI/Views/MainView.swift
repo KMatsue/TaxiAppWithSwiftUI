@@ -10,6 +10,9 @@ import MapKit
 import CoreLocation
 
 struct MainView: View {
+    
+    @ObservedObject var mainViewModel = MainViewModel()
+    
     @State private var showSearchView: Bool = false
 //    @State private var cameraPosison: MapCameraPosition = .region(
 //        MKCoordinateRegion(
@@ -65,7 +68,7 @@ extension MainView{
                             .font(.caption)
                             .foregroundStyle(.gray)
                     }
-                    Text("横浜市西区みなとみらい1-1")
+                    Text(mainViewModel.strPointName)
                         .font(.headline)
                 }
                 Spacer()
