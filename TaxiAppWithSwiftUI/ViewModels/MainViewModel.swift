@@ -11,12 +11,12 @@ import CoreLocation
 class MainViewModel: ObservableObject {
     @Published var strPointName = ""
     
-    init () {
-        Task {
-            await getLocationAddress(latitude: 35.45218, longitude: 139.63241)
-        }
-    }
-    
+    //    init () {
+    //        Task {
+    //            await getLocationAddress(latitude: 35.45218, longitude: 139.63241)
+    //        }
+    //    }
+    //
     @MainActor
     func getLocationAddress(latitude: CLLocationDegrees, longitude:CLLocationDegrees) async{
         
@@ -35,7 +35,7 @@ class MainViewModel: ObservableObject {
                 let thoroughfare = placemark.thoroughfare ?? ""
                 let subThoroughfare = placemark.subThoroughfare ?? ""
                 
-                print("Debug: \(administrativeArea)\n\(locality)\n\(subLocality)\n\(thoroughfare)\n\(subThoroughfare)")
+                print("DEBUG: \(administrativeArea)\(locality)\(subLocality)\(thoroughfare)\(subThoroughfare)")
                 
                 strPointName = "\(administrativeArea)\(locality)\(subLocality)\(thoroughfare)\(subThoroughfare)"
             }
