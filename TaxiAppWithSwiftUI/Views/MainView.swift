@@ -13,14 +13,14 @@ struct MainView: View {
     
     @ObservedObject var mainViewModel = MainViewModel()
     
-    @State private var showSearchView: Bool = false
-//    @State private var cameraPosison: MapCameraPosition = .region(
-//        MKCoordinateRegion(
-//            center: .init(latitude: 35.45218, longitude: 139.63241),
-//            latitudinalMeters: 1000,
-//            longitudinalMeters: 1000
-//        )
-//    )
+    
+    //    @State private var cameraPosison: MapCameraPosition = .region(
+    //        MKCoordinateRegion(
+    //            center: .init(latitude: 35.45218, longitude: 139.63241),
+    //            latitudinalMeters: 1000,
+    //            longitudinalMeters: 1000
+    //        )
+    //    )
     
     @State private var cameraPosison: MapCameraPosition = .userLocation(fallback: .automatic)
     
@@ -31,7 +31,7 @@ struct MainView: View {
             // Information Area
             information
         }
-        .sheet(isPresented: $showSearchView) {
+        .sheet(isPresented: $mainViewModel.showSearchView) {
             mainViewModel.userState = .setRidePoint
         } content: {
             SearchView(center: mainViewModel.ridePointCoordinate)
@@ -49,6 +49,10 @@ extension MainView{
     private var map: some View {
         Map(position: $cameraPosison) {
             UserAnnotation()
+            if let polyline = mainViewModel.route?.polyline {
+                MapPolyline(polyline)
+                    .stroke(.blue, lineWidth: 7)
+            }
         }
         .overlay {
             CenterPin()
@@ -57,7 +61,7 @@ extension MainView{
             CLLocationManager().requestWhenInUseAuthorization()
         }
         .onMapCameraChange(frequency: .onEnd) { context in
-//                print("DEBUG: \(context)")
+            //                print("DEBUG: \(context)")
             if mainViewModel.userState == .setRidePoint {
                 let center = context.camera.centerCoordinate
                 Task {
@@ -107,7 +111,7 @@ extension MainView{
             Button{
                 mainViewModel.userState = .searchLocation
                 //                print("押されました")
-                showSearchView.toggle()
+                mainViewModel.showSearchView.toggle()
             }label: {
                 Text("目的地を指定する")
                     .modifier(BasicButton())

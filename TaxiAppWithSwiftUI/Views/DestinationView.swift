@@ -77,7 +77,11 @@ extension DestinationView {
             Destination(address: mainViewModel.destinationAddress)
             // Button
             Button {
-                print("ボタンが押されました")
+                mainViewModel.showSearchView = false
+                Task {
+                    await mainViewModel.fetchRoute()
+                    
+                }
             } label: {
                 Text("ここに行く")
                     .modifier(BasicButton())
