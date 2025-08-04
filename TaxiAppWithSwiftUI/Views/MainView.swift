@@ -22,7 +22,6 @@ struct MainView: View {
     //        )
     //    )
     
-    @State private var cameraPosison: MapCameraPosition = .userLocation(fallback: .automatic)
     
     var body: some View {
         VStack {
@@ -47,7 +46,7 @@ struct MainView: View {
 extension MainView{
     
     private var map: some View {
-        Map(position: $cameraPosison) {
+        Map(position: $mainViewModel.mainCamera) {
             UserAnnotation()
             if let polyline = mainViewModel.route?.polyline {
                 MapPolyline(polyline)
