@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct Destination: View {
+    
+    let address: String
+    
     var body: some View {
         HStack(spacing:12){
             Image(systemName: "mappin.and.ellipse")
@@ -16,7 +19,7 @@ struct Destination: View {
                 
                 Text("目的地")
                     .font(.subheadline)
-                Text("指定してください")
+                Text(address)
                     .font(.headline)
             }
             Spacer()
@@ -29,5 +32,5 @@ struct Destination: View {
 }
 
 #Preview {
-    Destination()
+    Destination(address: "指定してください")
 }

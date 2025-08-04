@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct SearchView: View {
     
+    @ObservedObject var searchViewModel : SearchViewModel = SearchViewModel()
     @Environment(\.dismiss)var dismiss
     @State private var searchText = ""
+    let center: CLLocationCoordinate2D?
     
     var body: some View {
         NavigationStack{
@@ -39,7 +42,7 @@ struct SearchView: View {
 }
 
 #Preview {
-    SearchView()
+    SearchView(center: .init(latitude: 35.45218, longitude: 139.6324))
 }
 
 extension SearchView {
@@ -49,6 +52,13 @@ extension SearchView {
             .background(Color(uiColor: .secondarySystemBackground))
             .clipShape(Capsule())
             .padding()
+            .onSubmit {
+                guard !searchText.isEmpty, let center else { return }
+                Task {
+                    await searchViewModel.searchPlace(searchText: searchText, center: center, meters: 1000)
+                }
+                
+            }
     }
     
     private var searchResults: some View {
@@ -59,8 +69,8 @@ extension SearchView {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment:.leading)
                 
-                ForEach(0..<10){index in
-                    searchResultRow
+                ForEach(searchViewModel.searchResult, id: \.self){ mapItem in
+                    searchResultRow(mapItem:mapItem)
                 }
                 
                 
@@ -70,9 +80,9 @@ extension SearchView {
         .background(Color(uiColor: .systemGroupedBackground))
     }
     
-    private var searchResultRow: some View {
+    private func searchResultRow(mapItem: MKMapItem) -> some View {
         NavigationLink {
-            DestinationView()
+            DestinationView(placemark: mapItem.placemark)
         } label: {
             HStack(spacing: 12){
                 // Icon
@@ -82,12 +92,14 @@ extension SearchView {
                     .foregroundStyle(.main)
                 // Text
                 VStack(alignment: .leading){
-                    Text("横浜スタジアム")
+                    Text(mapItem.name ?? "")
                         .fontWeight(.bold)
                         .foregroundStyle(.black)
-                    Text("神奈川県横浜市中区横浜公園")
+                        .multilineTextAlignment(.leading)
+                    Text(searchViewModel.getAddressStrint(placemark: mapItem.placemark))
                         .font(.caption)
                         .foregroundStyle(.gray)
+                        .multilineTextAlignment(.leading)
                 }
                 
                 Spacer()
@@ -103,4 +115,38 @@ extension SearchView {
         
         
     }
+    
+//    private var searchResultRow: some View {
+//        NavigationLink {
+//            DestinationView()
+//        } label: {
+//            HStack(spacing: 12){
+//                // Icon
+//                Image(systemName: "mappin.circle.fill")
+//                    .resizable()
+//                    .frame(width: 24, height: 24)
+//                    .foregroundStyle(.main)
+//                // Text
+//                VStack(alignment: .leading){
+//                    Text("横浜スタジアム")
+//                        .fontWeight(.bold)
+//                        .foregroundStyle(.black)
+//                    Text("神奈川県横浜市中区横浜公園")
+//                        .font(.caption)
+//                        .foregroundStyle(.gray)
+//                }
+//                
+//                Spacer()
+//                
+//                //Icon
+//                Image(systemName: "chevron.right")
+//                    .foregroundStyle(.main)
+//            }
+//            .padding()
+//            .background(.white)
+//            .clipShape(RoundedRectangle(cornerRadius: 14))
+//        }
+//        
+//        
+//    }
 }

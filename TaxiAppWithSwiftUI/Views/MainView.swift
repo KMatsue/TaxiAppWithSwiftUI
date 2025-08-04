@@ -31,8 +31,11 @@ struct MainView: View {
             // Information Area
             information
         }
-        .sheet(isPresented: $showSearchView){
-            SearchView()
+        .sheet(isPresented: $showSearchView) {
+            mainViewModel.userState = .setRidePoint
+        } content: {
+            SearchView(center: mainViewModel.ridePointCoordinate)
+                .environmentObject(mainViewModel)
         }
     }
 }
@@ -55,11 +58,12 @@ extension MainView{
         }
         .onMapCameraChange(frequency: .onEnd) { context in
 //                print("DEBUG: \(context)")
-            let center = context.camera.centerCoordinate
-            Task {
-                await mainViewModel.getLocationAddress(latitude: center.latitude, longitude: center.longitude)
+            if mainViewModel.userState == .setRidePoint {
+                let center = context.camera.centerCoordinate
+                Task {
+                    await mainViewModel.setRideLocation(latitude: center.latitude, longitude: center.longitude)
+                }
             }
-            
         }
     }
     
@@ -79,14 +83,14 @@ extension MainView{
                             .font(.caption)
                             .foregroundStyle(.gray)
                     }
-                    Text(mainViewModel.strPointName)
+                    Text(mainViewModel.ridePointAddress)
                         .font(.headline)
                 }
                 Spacer()
             }
             .padding(.vertical)
             // Destination
-            Destination()
+            Destination(address: "設定してください")
                 .overlay(alignment: .topLeading){
                     VStack{
                         Image(systemName: "arrowtriangle.down.fill")
@@ -101,6 +105,7 @@ extension MainView{
             Spacer()
             // Button
             Button{
+                mainViewModel.userState = .searchLocation
                 //                print("押されました")
                 showSearchView.toggle()
             }label: {

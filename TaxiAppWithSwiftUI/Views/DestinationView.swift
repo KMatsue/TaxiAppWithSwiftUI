@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct DestinationView: View {
     
+    let placemark: MKPlacemark
+    @EnvironmentObject var mainViewModel: MainViewModel
     @Environment(\.dismiss)var dismiss
+    @State private var cameraPosition: MapCameraPosition = .automatic
     
     var body: some View {
         VStack {
@@ -24,7 +28,7 @@ struct DestinationView: View {
         .toolbar {
             ToolbarItemGroup(placement: .topBarLeading) {
                 Button{
-                   dismiss()
+                    dismiss()
                 } label:{
                     Image(systemName: "chevron.left")
                         .font(.headline)
@@ -37,13 +41,26 @@ struct DestinationView: View {
 
 #Preview {
     NavigationStack{
-        DestinationView()
+        DestinationView(placemark: .init(coordinate: .init(latitude: 35.45218, longitude: 139.6324)))
+            .environmentObject(MainViewModel())
     }
 }
 
 extension DestinationView {
     private var map: some View {
-        Color.gray
+        Map(position: $cameraPosition){
+            
+        }
+        .onAppear(){
+            cameraPosition = .camera(MapCamera(centerCoordinate: placemark.coordinate, distance: 800, pitch: 0))
+        }
+        .onMapCameraChange(frequency: .onEnd) { context in
+            let center = context.region.center
+            Task {
+                await mainViewModel.setDestination(latitude: center.latitude, longitude: center.longitude)
+            }
+            
+        }
     }
     
     private var information: some View {
@@ -57,7 +74,7 @@ extension DestinationView {
                     .foregroundStyle(.gray)
             }
             // Destination
-            Destination()
+            Destination(address: mainViewModel.destinationAddress)
             // Button
             Button {
                 print("ボタンが押されました")
@@ -65,7 +82,7 @@ extension DestinationView {
                 Text("ここに行く")
                     .modifier(BasicButton())
             }
-
+            
         }.padding(.horizontal)
             .padding(.top,14)
     }
