@@ -105,13 +105,13 @@ class MainViewModel: ObservableObject {
     }
     
     private func changeCameraPosition(){
-//        mainCamera = .region(
-//            MKCoordinateRegion(
-//                center: .init(latitude: 35.45218, longitude: 139.63241),
-//                latitudinalMeters: 100000,
-//                longitudinalMeters: 100000
-//            )
-//        )
+        //        mainCamera = .region(
+        //            MKCoordinateRegion(
+        //                center: .init(latitude: 35.45218, longitude: 139.63241),
+        //                latitudinalMeters: 100000,
+        //                longitudinalMeters: 100000
+        //            )
+        //        )
         
         
         guard var rect = route?.polyline.boundingMapRect else {return}
@@ -126,4 +126,15 @@ class MainViewModel: ObservableObject {
         
         mainCamera = .rect(rect)
     }
+        
+    func reset(){
+        userState = .setRidePoint
+        ridePointAddress = ""
+        ridePointCoordinate = nil
+        destinationAddress = ""
+        destinationCoordinates = nil
+        route = nil
+        mainCamera = .userLocation(fallback: .automatic)
+    }
+    
 }

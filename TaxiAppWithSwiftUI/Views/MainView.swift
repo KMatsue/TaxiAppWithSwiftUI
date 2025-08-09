@@ -11,7 +11,7 @@ import CoreLocation
 
 struct MainView: View {
     
-    @ObservedObject var mainViewModel = MainViewModel()
+    @StateObject var mainViewModel = MainViewModel()
     
     
     //    @State private var cameraPosison: MapCameraPosition = .region(
@@ -49,7 +49,19 @@ extension MainView{
     
     private var map: some View {
         Map(position: $mainViewModel.mainCamera) {
+            
+            // ユーザーの現在地
             UserAnnotation()
+            
+            // 乗車地と目的地
+            if let ridePoint = mainViewModel.ridePointCoordinate,
+               let destination = mainViewModel.destinationCoordinates {
+                Marker("乗車地", coordinate: ridePoint).tint(.blue)
+                Marker("目的地", coordinate: destination).tint(.blue)
+            }
+            
+            
+            // 乗車地から目的地のルート
             if let polyline = mainViewModel.route?.polyline {
                 MapPolyline(polyline)
                     .stroke(.blue, lineWidth: 7)
@@ -111,14 +123,33 @@ extension MainView{
             
             Spacer()
             // Button
-            Button{
-                mainViewModel.userState = .searchLocation
-                //                print("押されました")
-                mainViewModel.showSearchView.toggle()
-            }label: {
-                Text("目的地を指定する")
-                    .modifier(BasicButton())
+            if mainViewModel.userState == .confirming{
+                HStack(spacing: 16){
+                    Button{
+                        mainViewModel.reset()
+                    } label: {
+                        Text("キャンセル")
+                            .modifier(BasicButton(isPrimary: false))
+                    }
+                    
+                    Button{
+                        
+                    } label: {
+                        Text("タクシーを呼ぶ")
+                            .modifier(BasicButton())
+                    }
+                }
+            }else{
+                Button{
+                    mainViewModel.userState = .searchLocation
+                    //                print("押されました")
+                    mainViewModel.showSearchView.toggle()
+                }label: {
+                    Text("目的地を指定する")
+                        .modifier(BasicButton())
+                }
             }
+            
             
             
         }.padding(.horizontal)
