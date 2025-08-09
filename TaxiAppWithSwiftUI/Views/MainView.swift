@@ -31,7 +31,9 @@ struct MainView: View {
             information
         }
         .sheet(isPresented: $mainViewModel.showSearchView) {
-            mainViewModel.userState = .setRidePoint
+            if mainViewModel.userState != .confirming {
+                mainViewModel.userState = .setRidePoint
+            }
         } content: {
             SearchView(center: mainViewModel.ridePointCoordinate)
                 .environmentObject(mainViewModel)
@@ -54,7 +56,9 @@ extension MainView{
             }
         }
         .overlay {
-            CenterPin()
+            if mainViewModel.userState == .setRidePoint{
+                CenterPin()
+            }
         }
         .onAppear {
             CLLocationManager().requestWhenInUseAuthorization()
