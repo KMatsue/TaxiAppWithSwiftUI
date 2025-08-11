@@ -70,18 +70,7 @@ class MainViewModel: ObservableObject {
             //            for placemark in placemarks {
             //                print("placemark: \(placemark)")
             guard let placemark = placemarks.first else { return ""}
-            
-            let administrativeArea = placemark.administrativeArea ?? ""
-            let locality = placemark.locality ?? ""
-            let subLocality = placemark.subLocality ?? ""
-            let thoroughfare = placemark.thoroughfare ?? ""
-            let subThoroughfare = placemark.subThoroughfare ?? ""
-            
-            //                print("DEBUG: \(administrativeArea)\(locality)\(subLocality)\(thoroughfare)\(subThoroughfare)")
-            
-            return "\(administrativeArea)\(locality)\(subLocality)\(thoroughfare)\(subThoroughfare)"
-            
-            //            }
+            return MKPlacemark(placemark: placemark).addressString
             
         } catch {
             print("位置情報の処理に失敗しました：\(error.localizedDescription)")

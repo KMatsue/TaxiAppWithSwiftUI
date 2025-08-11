@@ -96,7 +96,7 @@ extension SearchView {
                         .fontWeight(.bold)
                         .foregroundStyle(.black)
                         .multilineTextAlignment(.leading)
-                    Text(searchViewModel.getAddressStrint(placemark: mapItem.placemark))
+                    Text(mapItem.placemark.addressString)
                         .font(.caption)
                         .foregroundStyle(.gray)
                         .multilineTextAlignment(.leading)
