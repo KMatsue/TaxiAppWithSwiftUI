@@ -26,10 +26,10 @@ class MainViewModel: ObservableObject {
     
     @Published var showSearchView: Bool = false
     
-    @Published var ridePointAddress = ""
+    @Published var ridePointAddress: String?
     var ridePointCoordinate: CLLocationCoordinate2D?
     
-    @Published var destinationAddress = ""
+    @Published var destinationAddress: String?
     var destinationCoordinates: CLLocationCoordinate2D?
     
     @Published var mainCamera: MapCameraPosition = .userLocation(fallback: .automatic)
@@ -43,40 +43,38 @@ class MainViewModel: ObservableObject {
     //
     
     @MainActor
-    func setRideLocation(latitude: CLLocationDegrees, longitude: CLLocationDegrees) async {
-        let location = CLLocation(latitude: latitude, longitude: longitude)
+    func setRideLocation(coordinates: CLLocationCoordinate2D) async {
         
-        ridePointCoordinate = location.coordinate
-        ridePointAddress = await getLocationAddress(location: location)
+        ridePointCoordinate = coordinates
+        ridePointAddress = await coordinates.getLocationAddress()
     }
     
     @MainActor
-    func setDestination(latitude: CLLocationDegrees, longitude: CLLocationDegrees) async {
-        let location = CLLocation(latitude: latitude, longitude: longitude)
+    func setDestination(coordinates: CLLocationCoordinate2D) async {
         
-        destinationCoordinates = location.coordinate
-        destinationAddress = await getLocationAddress(location: location)
+        destinationCoordinates = coordinates
+        destinationAddress = await coordinates.getLocationAddress()
     }
     
-    func getLocationAddress(location: CLLocation) async -> String{
-        
-        let geocoder = CLGeocoder()
-        //        let location = CLLocation(latitude: latitude, longitude: longitude)
-        //
-        //        ridePointCoordinate = location.coordinate
-        
-        do {
-            let placemarks = try await geocoder.reverseGeocodeLocation(location)
-            //            for placemark in placemarks {
-            //                print("placemark: \(placemark)")
-            guard let placemark = placemarks.first else { return ""}
-            return MKPlacemark(placemark: placemark).addressString
-            
-        } catch {
-            print("位置情報の処理に失敗しました：\(error.localizedDescription)")
-            return ""
-        }
-    }
+    //    func getLocationAddress(coordinates: CLLocationCoordinate2D) async -> String{
+    //
+    //        let geocoder = CLGeocoder()
+    //        let location = CLLocation(latitude: coordinates.latitude, longitude: coordinates.longitude)
+    //        //
+    //        //        ridePointCoordinate = location.coordinate
+    //
+    //        do {
+    //            let placemarks = try await geocoder.reverseGeocodeLocation(location)
+    //            //            for placemark in placemarks {
+    //            //                print("placemark: \(placemark)")
+    //            guard let placemark = placemarks.first else { return ""}
+    //            return MKPlacemark(placemark: placemark).addressString
+    //
+    //        } catch {
+    //            print("位置情報の処理に失敗しました：\(error.localizedDescription)")
+    //            return ""
+    //        }
+    //    }
     
     @MainActor
     func fetchRoute() async {
@@ -115,7 +113,7 @@ class MainViewModel: ObservableObject {
         
         mainCamera = .rect(rect)
     }
-        
+    
     func reset(){
         userState = .setRidePoint
         ridePointAddress = ""

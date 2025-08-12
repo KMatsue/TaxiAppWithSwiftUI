@@ -78,9 +78,8 @@ extension MainView{
         .onMapCameraChange(frequency: .onEnd) { context in
             //                print("DEBUG: \(context)")
             if mainViewModel.userState == .setRidePoint {
-                let center = context.camera.centerCoordinate
                 Task {
-                    await mainViewModel.setRideLocation(latitude: center.latitude, longitude: center.longitude)
+                    await mainViewModel.setRideLocation(coordinates: context.camera.centerCoordinate)
                 }
             }
         }
@@ -102,14 +101,14 @@ extension MainView{
                             .font(.caption)
                             .foregroundStyle(.gray)
                     }
-                    Text(mainViewModel.ridePointAddress)
+                    Text(mainViewModel.ridePointAddress ?? "")
                         .font(.headline)
                 }
                 Spacer()
             }
             .padding(.vertical)
             // Destination
-            Destination(address: mainViewModel.destinationAddress.isEmpty ? nil : mainViewModel.destinationAddress)
+            Destination(address: mainViewModel.destinationAddress)
                 .overlay(alignment: .topLeading){
                     VStack{
                         Image(systemName: "arrowtriangle.down.fill")
