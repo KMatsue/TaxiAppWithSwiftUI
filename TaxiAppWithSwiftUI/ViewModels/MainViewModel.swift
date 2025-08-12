@@ -92,26 +92,21 @@ class MainViewModel: ObservableObject {
     }
     
     private func changeCameraPosition(){
-        //        mainCamera = .region(
-        //            MKCoordinateRegion(
-        //                center: .init(latitude: 35.45218, longitude: 139.63241),
-        //                latitudinalMeters: 100000,
-        //                longitudinalMeters: 100000
-        //            )
-        //        )
-        
-        
-        guard var rect = route?.polyline.boundingMapRect else {return}
-        
-        let paddingWidth = rect.size.width * 0.2
-        let paddingHeight = rect.size.height * 0.2
-        rect.size.width += paddingWidth
-        rect.size.height += paddingHeight
-        rect.origin.x -= paddingWidth / 2
-        rect.origin.y -= paddingHeight / 2
-        
-        
-        mainCamera = .rect(rect)
+        switch userState {
+        case .confirming:
+            guard var rect = route?.polyline.boundingMapRect else {return}
+            
+            let paddingWidth = rect.size.width * 0.2
+            let paddingHeight = rect.size.height * 0.2
+            rect.size.width += paddingWidth
+            rect.size.height += paddingHeight
+            rect.origin.x -= paddingWidth / 2
+            rect.origin.y -= paddingHeight / 2
+            
+            mainCamera = .rect(rect)
+        default:
+            mainCamera = .userLocation(fallback: .automatic)
+        }
     }
     
     func reset(){
@@ -121,7 +116,9 @@ class MainViewModel: ObservableObject {
         destinationAddress = ""
         destinationCoordinates = nil
         route = nil
-        mainCamera = .userLocation(fallback: .automatic)
+        
+        changeCameraPosition()
+
     }
     
 }
