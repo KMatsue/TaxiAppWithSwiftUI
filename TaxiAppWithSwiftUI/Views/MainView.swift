@@ -35,7 +35,7 @@ struct MainView: View {
                 mainViewModel.userState = .setRidePoint
             }
         } content: {
-            SearchView(center: mainViewModel.ridePointCoordinate)
+            SearchView()
                 .environmentObject(mainViewModel)
         }
     }
@@ -109,16 +109,7 @@ extension MainView{
             .padding(.vertical)
             // Destination
             Destination(address: mainViewModel.destinationAddress)
-                .overlay(alignment: .topLeading){
-                    VStack{
-                        Image(systemName: "arrowtriangle.down.fill")
-                        Image(systemName: "arrowtriangle.down.fill").opacity(0.66)
-                        Image(systemName: "arrowtriangle.down.fill").opacity(0.33)
-                    }
-                    .font(.caption2)
-                    .foregroundStyle(.main)
-                    .offset(x: 8, y: -16)
-                }
+                .threeTriangles(x: 8, y: -16)
             
             Spacer()
             // Button
@@ -152,7 +143,7 @@ extension MainView{
             
             
         }.padding(.horizontal)
-            .frame(height: 240)
+            .frame(height: Constants.informationAreaHeight)
     }
 }
 

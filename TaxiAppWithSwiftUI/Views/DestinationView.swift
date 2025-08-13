@@ -41,7 +41,7 @@ struct DestinationView: View {
 
 #Preview {
     NavigationStack{
-        DestinationView(placemark: .init(coordinate: .init(latitude: 35.45218, longitude: 139.6324)))
+        DestinationView(placemark: .init(coordinate: Constants.sampleCoordinates))
             .environmentObject(MainViewModel())
     }
 }
@@ -56,7 +56,7 @@ extension DestinationView {
         }
         .onAppear(){
             mainViewModel.userState = .setDestination
-            cameraPosition = .camera(MapCamera(centerCoordinate: placemark.coordinate, distance: 800, pitch: 0))
+            cameraPosition = .camera(MapCamera(centerCoordinate: placemark.coordinate, distance: Constants.cameraDistance, pitch: 0))
         }
         .onMapCameraChange(frequency: .onEnd) { context in
             Task {

@@ -58,6 +58,11 @@
 			path = TaxiAppWithSwiftUIUITests;
 			sourceTree = "<group>";
 		};
+		2656D2DC2E4B7F07001A77F3 /* Settings */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Settings;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +93,7 @@
 		26184A092E22892C00112A4B = {
 			isa = PBXGroup;
 			children = (
+				2656D2DC2E4B7F07001A77F3 /* Settings */,
 				26184A142E22892C00112A4B /* TaxiAppWithSwiftUI */,
 				26184A252E22892C00112A4B /* TaxiAppWithSwiftUITests */,
 				26184A2F2E22892C00112A4B /* TaxiAppWithSwiftUIUITests */,
@@ -122,6 +128,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				26184A142E22892C00112A4B /* TaxiAppWithSwiftUI */,
+				2656D2DC2E4B7F07001A77F3 /* Settings */,
 			);
 			name = TaxiAppWithSwiftUI;
 			packageProductDependencies = (

@@ -96,8 +96,8 @@ class MainViewModel: ObservableObject {
         case .confirming:
             guard var rect = route?.polyline.boundingMapRect else {return}
             
-            let paddingWidth = rect.size.width * 0.2
-            let paddingHeight = rect.size.height * 0.2
+            let paddingWidth = rect.size.width * Constants.paddingRetio
+            let paddingHeight = rect.size.height * Constants.paddingRetio
             rect.size.width += paddingWidth
             rect.size.height += paddingHeight
             rect.origin.x -= paddingWidth / 2
@@ -111,9 +111,9 @@ class MainViewModel: ObservableObject {
     
     func reset(){
         userState = .setRidePoint
-        ridePointAddress = ""
+        ridePointAddress = nil
         ridePointCoordinate = nil
-        destinationAddress = ""
+        destinationAddress = nil
         destinationCoordinates = nil
         route = nil
         
